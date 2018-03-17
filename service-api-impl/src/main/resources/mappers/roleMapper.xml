@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gecq.insurance.agent.service.impl.persistence.admin.RoleDao">
+    <resultMap id="modelBean" type="com.gecq.insurance.agent.service.models.ModelBean"/>
+    <delete id="delete" parameterType="map">
+        DELETE FROM t_role WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="map">
+        INSERT INTO t_role(id,name,level,create_at,version)
+        VALUES (#{id},#{name},#{level},now(),1)
+    </insert>
+    <update id="update" parameterType="map">
+        UPDATE t_role SET name=#{name},level=#{level},update_at=now(),version=version+1
+        WHERE id=#{id}
+    </update>
+    <update id="updateState" parameterType="map">
+        UPDATE t_role SET state=#{state} WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <select id="sizeCount" parameterType="map" resultType="int">
+        SELECT COUNT(id) FROM t_role
+    </select>
+    <select id="findList" parameterType="map" resultMap="modelBean">
+        SELECT ${cols} FROM t_role
+        <where>
+            <if test="name!=null and name!=''">
+                name LIKE "%"#{name}"%"
+            </if>
+        </where>
+        ORDER BY create_at DESC
+    </select>
+    <select id="findOne" parameterType="map" resultMap="modelBean">
+        SELECT ${cols} FROM t_role
+        <where>
+            <if test="id!=null and id!=''">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,213 @@
+.main{
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.main > div{
+    display: table-cell;
+    vertical-align: top;
+}
+.main-left{
+    width: 20%;
+    height: 100%;
+    min-width: 200px;
+    background: #5e5e5e;
+}
+.main-right{
+    background: #f7f7f7;
+}
+.tab-content-container{
+    padding: 10px;
+}
+/** left content ***/
+.user-info{
+    background: #4e4e4e;
+    height: 40px;
+}
+.user-info > div{
+    display: table-cell;
+    vertical-align: middle;
+}
+.user-info .login-out{
+    width: 40px!important;
+    cursor: pointer;
+    text-align: center;
+}
+.user-info .login-out:hover{
+    background: #444444;
+}
+.user-info .info{
+    padding-left: 10px;
+}
+.user-info .info img{
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius:15px;
+    -moz-border-radius:15px;
+    border-radius:15px;
+    background: #eeeeee;
+    vertical-align: middle;
+}
+.user-info .info span{
+    display: inline-block;
+    color:#eeeeee;
+    vertical-align: middle;
+}
+
+.menu-box{
+
+}
+.menu-box ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.menu-box ul li{
+    color: #eeeeee;
+    cursor: default;
+}
+.menu-box ul li .text{
+    padding: 5px 6px;
+}
+.menu-box ul li ul{
+    padding-left: 10px;
+}
+.menu-box ul li .text:hover{
+    background: rgba(255, 255, 255, 0.25);
+}
+.menu-box ul li.normal.active > .text{
+    background: #fbed09;
+    color:#5e5e5e;
+}
+.menu-box ul li.expansion > .text,.menu-box ul li.collapse > .text{
+    background: rgba(255, 255, 255, 0.15);
+    color:#eeeeee;
+}
+.menu-box ul li .icon{
+    width: 15px;
+    height: 15px;
+}
+.menu-box ul li.expansion .icon{
+    background-image: url("../images/icons/menu-expansion.svg");
+}
+.menu-box ul li.collapse .icon{
+    background-image: url("../images/icons/menu-collapse.svg");
+}
+.menu-box ul li.normal .icon{
+    background-image: url("../images/icons/menu-normal.svg");
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+}
+.menu-box ul li.normal.active .icon{
+    width: 15px;
+    height: 15px;
+    margin-left: 0;
+    background-image: url("../images/icons/arrow-right.svg")!important;
+}
+/*** right content **/
+.tab-head{
+    background: #cccccc;
+    height: 40px;
+    /*border-bottom: 1px solid #7e7e7e;*/
+    position: relative;
+}
+.tab-head .line{
+    height: 1px;
+    background: #7e7e7e;
+    position: absolute;
+    left:0;
+    bottom: 0;
+    z-index: 3;
+    width: 100%;
+}
+.tab-head > div,.tab-container > div{
+    display: table-cell;
+}
+.tab-head .refresh-tab{
+    width: 30px!important;
+    text-align: center;
+    vertical-align: middle;
+}
+.tab-head .refresh-tab:hover{
+    background: #dddddd;
+}
+.tab-head .refresh-tab:active{
+    background: #eeeeee;
+}
+.tab-container{
+    vertical-align: bottom;
+    max-width: 500px;
+    overflow: hidden;
+    position: relative;
+}
+.tab-container .scroll{
+    position: fixed;
+    height: 40px;
+    display: inline-block;
+    z-index:4;
+    line-height: 40px;
+    background: rgba(255,255,255,0.35);
+    visibility: hidden;
+}
+.tab-container .scroll .icon{
+    width: 10px;
+    height: 10px;
+}
+.tab-container .scroll:hover{
+    background: rgba(255,255,255,0.75);
+}
+.tab-container .scroll-left{
+    left:0;
+    top:0;
+}
+.tab-container .scroll-right{
+    right:30px;
+    top:0;
+}
+.tab-container > .tab{
+    padding-left:10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tab-container > .tab:last-child{
+    padding-right: 10px;
+}
+.tab-container > .tab .tab-text{
+    position: relative;
+    -webkit-border-radius:3px 3px 0 0;
+    -moz-border-radius:3px 3px 0 0;
+    border-radius:3px 3px 0 0 ;
+    border:1px solid #7e7e7e;
+    background: #aaaaaa;
+    color: #4e4e4e;
+    padding: 5px;
+    border-bottom: 0;
+    cursor: default;
+    z-index: 1;
+}
+.tab-container > .tab .tab-text:hover{
+    background: #bbbbbb;
+}
+.tab-container > .tab.active .tab-text,.tab-container > .tab.active .tab-text:hover{
+    background: #f7f7f7;
+    z-index: 3;
+    padding-right: 20px;
+}
+.tab-container > .tab .close{
+    position: absolute;
+    right: 3px;
+    top:5px;
+    cursor: pointer;
+    display: none;
+}
+.tab-container > .tab .close{
+    width: 15px;
+    height: 15px;
+    background-image: url("../images/icons/tab-normal-close.svg");
+}
+.tab-container > .tab.active .close{
+    top:6px;
+    display: inline-block;
+    background-image: url("../images/icons/tab-active-close.svg");
+}

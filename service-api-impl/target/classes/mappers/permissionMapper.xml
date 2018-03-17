@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gecq.insurance.agent.service.impl.persistence.admin.PermissionDao">
+    <resultMap id="modelBean" type="com.gecq.insurance.agent.service.models.ModelBean"/>
+    <delete id="delete" parameterType="map">
+        DELETE FROM t_role_permission WHERE id=#{id}
+    </delete>
+    <insert id="insert" parameterType="map">
+        INSERT INTO t_role_permission (id,parent_id,name,code,level,url,url_pattern,state,create_at,version) VALUES
+         (#{id},#{parentId},#{name},#{code},#{level},#{url},#{urlPattern},#{state},now(),1)
+    </insert>
+    <update id="update" parameterType="map">
+        UPDATE t_role_permission SET name=#{name},code=#{code},level=#{level},url=#{url},url_pattern=#{urlPattern}
+        WHERE id=#{id}
+    </update>
+    <update id="updateState" parameterType="map">
+        UPDATE t_role_permission SET state=#{state} WHERE id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+    <select id="sizeCount" parameterType="map">
+        SELECT count(id) FROM t_role_permission
+    </select>
+    <select id="findList" parameterType="map" resultMap="modelBean">
+        SELECT ${cols} FROM t_role_permission
+        <where>
+            <if test="parentId!=null and parentId!=''">
+                <choose>
+                    <when test="parentId=='top'">
+                        AND parent_id IS NULL
+                    </when>
+                    <otherwise>
+                        AND parent_id = #{parentId}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="name!=null and name!=''">
+                AND name LIKE "%"#{name}"%"
+            </if>
+            <if test="code!=null and code!=''">
+                AND code LIKE "%"#{code}"%"
+            </if>
+            <if test="state!=null and state!=''">
+               AND state = #{state}
+            </if>
+        </where>
+        ORDER BY create_at DESC
+    </select>
+    <select id="findOne" parameterType="map" resultMap="modelBean">
+        SELECT ${cols} FROM t_role_permission
+        <where>
+            <if test="id!=null and id!=''">
+                id=#{id}
+            </if>
+        </where>
+    </select>
+    <select id="findByUserId" parameterType="map" resultMap="modelBean">
+        SELECT ${cols} FROM t_role_permission rp WHERE rp.state='enable' AND rp.id IN
+        (SELECT rpr.permission_id FROM t_role_permission_relation rpr INNER JOIN t_role_user ru ON rpr.role_id = ru.role_id AND ru.id=#{userId})
+    </select>
+    <select id="findPermissionIdsByRoleId" parameterType="map" resultMap="modelBean">
+        SELECT rpr.permission_id FROM t_role_permission_relation rpr WHERE rpr.role_id=#{roleId}
+    </select>
+</mapper>

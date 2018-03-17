@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gecq.insurance.agent.service.impl.persistence.admin.AccountDao">
+    <resultMap id="modelBean" type="com.gecq.insurance.agent.service.models.ModelBean"/>
+    <select id="findByAccount" resultMap="modelBean" parameterType="string">
+        SELECT  s.user_id AS id,s.account,s.pwd,s.state,s.pwd_salt,
+                (SELECT r.level FROM t_role r WHERE  r.id=ru.role_id) as level,ru.role_id,ru.name,ru.email,ru.mobile,ru.id
+        FROM t_user_account s
+        INNER JOIN t_role_user ru ON s.user_id = ru.id
+         WHERE s.account = #{account}
+        AND s.state = 'enable'
+    </select>
+    <select id="findAccountDetailByUserId" parameterType="string" resultMap="modelBean">
+        SELECT  s.user_id AS id,s.account,s.pwd,s.state,s.pwd_salt,
+                (SELECT r.level FROM t_role r WHERE  r.id=ru.role_id) as level,ru.role_id,ru.name,ru.email,ru.mobile,ru.id
+        FROM t_user_account s
+        INNER JOIN t_role_user ru ON s.user_id = ru.id
+         WHERE s.state = 'enable' AND s.user_id=#{userId}
+    </select>
+    <select id="findList" resultMap="modelBean" parameterType="map">
+        SELECT ${cols} FROM t_user_account s
+        <where>
+            <if test="account !=null and account!=''">
+                s.account LIKE  "%"#{account}"%"
+            </if>
+        </where>
+        ORDER BY s.create_at DESC,s.update_at DESC
+    </select>
+    <update id="updatePwd" parameterType="map">
+        UPDATE t_user_account SET pwd=#{pwd},pwd_salt=#{pwdSalt},update_at=now(),version=version+1 WHERE user_id=#{id}
+    </update>
+    <select id="sizeCount" resultType="int" parameterType="map">
+        SELECT count(s.id) FROM t_user_account s WHERE s.account = #{account} AND s.type=#{accountType}
+        <if test="accountId!=null and accountId!=''">
+            AND s.id != #{accountId}
+        </if>
+        <if test="id!=null and id!=''">
+            AND s.user_id != #{id}
+        </if>
+    </select>
+    <select id="findOne" resultMap="modelBean" parameterType="map">
+        SELECT ${cols} FROM t_user_account s
+        <where>
+            <if test="id!=null and id!=''">
+                s.user_id = #{id}
+            </if>
+        </where>
+    </select>
+    <update id="update" parameterType="map">
+        UPDATE t_user_account SET account=#{account},update_at=now(),version=version+1 WHERE user_id=#{id}
+    </update>
+
+    <insert id="insert" parameterType="map">
+        INSERT INTO t_user_account (user_id,state,type,account,pwd,salt,version,create_at) VALUES (#{userId},#{state},#{type},#{account},#{pwd},#{salt},1,now());
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM t_user_account WHERE user_id=#{id}
+    </delete>
+
+</mapper>

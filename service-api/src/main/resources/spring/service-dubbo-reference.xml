@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+       ">
+    <import resource="classpath*:/META-INF/spring/configs.xml"/>
+    <dubbo:application name="insurance_agent_service" />
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry address="#{webConfig['zookeeper.address']}" />
+    <dubbo:reference id="accountService"
+                     interface="com.gecq.insurance.agent.service.admin.AccountService" />
+    <dubbo:reference id="permissionService"
+                     interface="com.gecq.insurance.agent.service.admin.PermissionService" />
+    <dubbo:reference id="roleService"
+                     interface="com.gecq.insurance.agent.service.admin.RoleService" />
+</beans>
